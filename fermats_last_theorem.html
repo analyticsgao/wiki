@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fermat's Last Theorem - The 358-Year Mystery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            font-style: italic;
+            opacity: 0.95;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .theorem-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.4em;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .interactive-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        .slider-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .equation-display {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.5em;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            border: 3px solid #667eea;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .works {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .doesnt-work {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+        }
+
+        .year {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .fun-fact {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 6px solid #f5576c;
+        }
+
+        .fun-fact-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h2 {
+            color: #667eea;
+            margin: 30px 0 20px;
+            font-size: 2em;
+        }
+
+        p {
+            line-height: 1.8;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .visual-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .visual-box:hover {
+            transform: scale(1.05);
+        }
+
+        .visual-box .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        canvas {
+            max-width: 100%;
+            border-radius: 10px;
+            background: white;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+            
+            .theorem-box {
+                font-size: 1.1em;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Fermat's Last Theorem</h1>
+            <div class="subtitle">The 358-year-old puzzle that stumped the world's greatest minds</div>
+        </header>
+
+        <div class="card">
+            <h2>The Simple Question</h2>
+            <p>In 1637, a French lawyer named Pierre de Fermat was reading an ancient Greek math book when he scribbled a note in the margin. That note would haunt mathematicians for over three centuries.</p>
+            
+            <div class="theorem-box">
+                x<sup>n</sup> + y<sup>n</sup> = z<sup>n</sup>
+                <div style="margin-top: 20px; font-size: 0.8em;">
+                    has no whole number solutions when n > 2
+                </div>
+            </div>
+
+            <p>Fermat claimed he had "a truly marvelous proof" but the margin was "too narrow to contain it." Then he died without ever writing it down. Was he bluffing? Did he actually have a proof?</p>
+        </div>
+
+        <div class="card">
+            <h2>Wait, Let's Start Simple</h2>
+            <p>You probably already know a case where this <em>does</em> work! Remember the Pythagorean theorem from school?</p>
+            
+            <div class="visual-grid">
+                <div class="visual-box">
+                    <div class="number">3² + 4² = 5²</div>
+                    <div>9 + 16 = 25 ✓</div>
+                </div>
+                <div class="visual-box">
+                    <div class="number">5² + 12² = 13²</div>
+                    <div>25 + 144 = 169 ✓</div>
+                </div>
+                <div class="visual-box">
+                    <div class="number">8² + 15² = 17²</div>
+                    <div>64 + 225 = 289 ✓</div>
+                </div>
+            </div>
+
+            <p>When the exponent (that little number) is 2, we can find <span class="highlight">lots</span> of solutions! These are called Pythagorean triples.</p>
+        </div>
+
+        <div class="card">
+            <h2>Try It Yourself!</h2>
+            <p>Let's see what happens when we increase the exponent. Use the sliders below to explore:</p>
+            
+            <div class="interactive-section">
+                <div class="slider-container">
+                    <label>Exponent (n): <span id="exponent-value">2</span></label>
+                    <input type="range" id="exponent" min="2" max="10" value="2">
+                </div>
+
+                <div class="slider-container">
+                    <label>First number (x): <span id="x-value">3</span></label>
+                    <input type="range" id="x" min="1" max="50" value="3">
+                </div>
+
+                <div class="slider-container">
+                    <label>Second number (y): <span id="y-value">4</span></label>
+                    <input type="range" id="y" min="1" max="50" value="4">
+                </div>
+
+                <div class="equation-display">
+                    <div id="equation"></div>
+                    <div id="calculation"></div>
+                </div>
+
+                <div class="result" id="result"></div>
+
+                <p style="margin-top: 20px; color: #666; font-size: 0.95em;">
+                    <strong>Hint:</strong> Try moving the exponent to 3, 4, or higher. No matter what numbers you try, you'll never find a whole number solution! That's what Fermat claimed, and what took 358 years to prove.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>The Wild Journey</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">1637</div>
+                    <p>Fermat writes his famous margin note. Mathematicians think: "How hard could it be?"</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="year">1670</div>
+                    <p>Fermat dies. His son publishes his notes. The hunt begins.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="year">1753-1825</div>
+                    <p>Leonhard Euler proves it for n=3. Sophie Germain makes major progress. Each small step takes decades.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="year">1994</div>
+                    <p>Andrew Wiles, after working in secret for 7 years, announces a proof! The math world celebrates... then finds an error. 😱</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="year">1995</div>
+                    <p>Wiles fixes the proof. <strong>358 years later, it's finally solved!</strong> The proof is 150 pages long and uses math that didn't exist in Fermat's time.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="fun-fact">
+                <div class="fun-fact-title">🎭 The Plot Twist</div>
+                <p>Fermat almost certainly didn't have a valid proof. Wiles's solution uses sophisticated mathematics (elliptic curves, modular forms) that wouldn't be invented for another 300+ years. Fermat probably made a mistake... but his "mistake" inspired centuries of mathematical breakthroughs!</p>
+            </div>
+
+            <div class="fun-fact">
+                <div class="fun-fact-title">💰 The Prize</div>
+                <p>A German mathematician offered 100,000 marks in 1908 for the first proof. By the time Wiles solved it, inflation and war had reduced the prize to about $50,000. Wiles didn't claim it—he'd already won something far more valuable: immortality in mathematics.</p>
+            </div>
+
+            <div class="fun-fact">
+                <div class="fun-fact-title">🧮 Why It Matters</div>
+                <p>The journey to prove Fermat's Last Theorem led to entirely new branches of mathematics. Sometimes the most valuable thing about a problem isn't the answer—it's all the tools and insights we develop while trying to solve it.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>The Takeaway</h2>
+            <p>Fermat's Last Theorem teaches us that:</p>
+            <ul style="margin-left: 30px; line-height: 2;">
+                <li>Simple questions can have incredibly complex answers</li>
+                <li>Some problems require inventing entirely new mathematics</li>
+                <li>Persistence pays off (even if it takes 358 years)</li>
+                <li>A single margin note can change the course of history</li>
+            </ul>
+            
+            <p style="margin-top: 30px; text-align: center; font-style: italic; color: #667eea;">
+                "I have discovered a truly marvelous proof of this, which this margin is too narrow to contain." <br>— Pierre de Fermat
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const exponentSlider = document.getElementById('exponent');
+        const xSlider = document.getElementById('x');
+        const ySlider = document.getElementById('y');
+        
+        const exponentValue = document.getElementById('exponent-value');
+        const xValue = document.getElementById('x-value');
+        const yValue = document.getElementById('y-value');
+        
+        const equation = document.getElementById('equation');
+        const calculation = document.getElementById('calculation');
+        const result = document.getElementById('result');
+
+        function updateCalculation() {
+            const n = parseInt(exponentSlider.value);
+            const x = parseInt(xSlider.value);
+            const y = parseInt(ySlider.value);
+            
+            exponentValue.textContent = n;
+            xValue.textContent = x;
+            yValue.textContent = y;
+            
+            const leftSide = Math.pow(x, n) + Math.pow(y, n);
+            const zFloat = Math.pow(leftSide, 1/n);
+            const zRounded = Math.round(zFloat);
+            
+            equation.innerHTML = `${x}<sup>${n}</sup> + ${y}<sup>${n}</sup> = z<sup>${n}</sup>`;
+            calculation.innerHTML = `${Math.pow(x, n)} + ${Math.pow(y, n)} = ${leftSide}`;
+            
+            const rightSide = Math.pow(zRounded, n);
+            const difference = Math.abs(leftSide - rightSide);
+            
+            if (difference === 0) {
+                result.className = 'result works';
+                result.innerHTML = `✓ Perfect match! z = ${zRounded}<br>
+                    ${x}<sup>${n}</sup> + ${y}<sup>${n}</sup> = ${zRounded}<sup>${n}</sup>`;
+            } else {
+                const percentOff = ((difference / leftSide) * 100).toFixed(2);
+                result.className = 'result doesnt-work';
+                result.innerHTML = `✗ Close, but not exact!<br>
+                    Closest whole number z = ${zRounded}, but ${zRounded}<sup>${n}</sup> = ${rightSide}<br>
+                    Off by ${difference.toLocaleString()} (${percentOff}%)`;
+            }
+        }
+
+        exponentSlider.addEventListener('input', updateCalculation);
+        xSlider.addEventListener('input', updateCalculation);
+        ySlider.addEventListener('input', updateCalculation);
+        
+        updateCalculation();
+    </script>
+</body>
+</html>
